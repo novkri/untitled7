@@ -1,0 +1,24 @@
+{% extends "Layout.html "%}
+{% block content %}
+    <table>
+        <tr valign="top">
+            <br>
+                <h1>User: {{ user.username }}</h1>
+
+                {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
+
+                {% if user == current_user %}
+                <p><a href="{{ url_for('account') }}">Редактировать мой профиль</a></p>
+                {% endif %}
+
+                    subscriptions:
+                {% for sportsmens in user.followed %}
+                    </br>
+                {{ sportsmens.name }} чавствует в  событиях: {% for event in sportsmens.taking_parts %}
+                                                                    {{ event.name }},
+                                                            {% endfor %}
+                 {% endfor %}
+            </td>
+        </tr>
+    </table>
+{% endblock content %}
