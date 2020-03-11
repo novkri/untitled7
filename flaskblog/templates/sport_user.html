@@ -8,8 +8,6 @@
                 <p>id^ {{ sportsmen.id}} </p>
                 <p>event_id: {{ sportsmen.event_id}} </p>
                 <p>taking_parts: {{ sportsmen.taking_parts}} </p>
-                <p>dd: {{ current_user.subscriptions}} </p>
-   <p>fff {{ sportsmen.followers.followed_id == 1}}</p>
 
                 {% if not current_user.is_following(sportsmen) %}
                 <p><a href="{{ url_for('follow', name=sportsmen.name) }}">Follow</a></p>

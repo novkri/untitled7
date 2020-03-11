@@ -1,8 +1,5 @@
 # работа с данными
 from datetime import datetime
-
-import login
-
 from flaskblog import db, login_manager
 from flask_login import UserMixin
 
@@ -23,9 +20,6 @@ subs = db.Table('subs',
                 db.Column('sportsmen_id', db.Integer, db.ForeignKey('sportsmen.id'))
                 )
 
-
-
-
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -41,8 +35,6 @@ sport_event = db.Table('sport_event',
                 db.Column('sportsmen_id', db.Integer, db.ForeignKey('sportsmen.id')),
                 db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
                 )
-
-
 
 class Sportsmen(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -87,8 +79,6 @@ class User(db.Model, UserMixin):
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     subscriptions = db.relationship('Sportsmen', secondary=subs, backref=db.backref('subscribers', lazy='dynamic'))
     followed = db.relationship('Sportsmen', secondary=followers,
-        # primaryjoin='followers.c.follower_id == User.id',
-        # secondaryjoin='followers.c.followed_id == Sportsmen.id',
         backref=db.backref('followers', lazy='dynamic') )
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
@@ -104,12 +94,3 @@ class User(db.Model, UserMixin):
     def is_following(self, sportsmen):
         return self.followed.filter(
             followers.c.followed_id == sportsmen.id).count() > 0
-
-    # def followed_posts(self):
-    #     followed = Sportsmen.query.join(
-    #         followers, (followers.c.followed_id == Sportsmen.id)).filter(
-    #         followers.c.follower_id == self.id)
-    #     #own = Post.query.filter_by(user_id=self.id)
-    #     return followed
-    #         #.union(own)
-    #         #.order_by(Sportsmen.id.desc())

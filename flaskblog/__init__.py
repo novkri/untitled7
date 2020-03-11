@@ -15,12 +15,12 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
-app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'  # Cosmo
+app.config['FLASK_ADMIN_SWATCH'] = 'Cosmo'  # Cosmo
 
 from flaskblog.models import User, Post, Sportsmen, Event, Comment
 
-admin = Admin(app, name='Admin Page', template_mode='bootstrap3')
-# admin = Admin(app)
+admin = Admin(app, name='Admin Page', template_mode='bootstrap1') ##
+
 admin.add_view(ModelView(Post, db.session))
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Sportsmen, db.session))

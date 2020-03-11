@@ -6,12 +6,9 @@ from flaskblog.models import User
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username',
-                           validators=[DataRequired()])
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
+    username = StringField('Username',validators=[DataRequired()])
+    email = StringField('Email',validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-
     submit = SubmitField('Зарегистрироваться')
 
     def validate_username(self, username):
@@ -26,18 +23,15 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Войти')
 
 
 class UpdateAccountForm(FlaskForm):
-    username = StringField('Username',
-                           validators=[DataRequired()])
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Обновить')
 
     def validate_username(self, username):
@@ -53,8 +47,6 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('Емэйл уже используется')
 
 
-
-
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
@@ -64,7 +56,3 @@ class CommForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
-
-# class PostForm(FlaskForm):
-#     post = TextAreaField('Say something', validators=[DataRequired()])
-#     submit = SubmitField('Submit')

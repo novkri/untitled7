@@ -1,13 +1,10 @@
 # логика работы программы
 from flask import render_template, url_for, flash, redirect, request, abort
-from flaskblog import app, db, bcrypt
+from flaskblog import app, db
 from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, CommForm
 from flaskblog.models import User, Post, Sportsmen, Event, Comment
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
-
-#from flaskblog.forms import EditProfileForm
-
 
 @app.before_request
 def before_request():
@@ -21,11 +18,7 @@ def before_request():
 @login_required
 def home():
     posts = Post.query.all()
-    #posts = current_user.followed_posts()
-    # uss = Us.query.all()
-    # channels = Channel.query.all()
     return render_template('home.html', posts=posts)
-
 
 @app.route("/index")
 def index():
@@ -41,26 +34,16 @@ def blog_single():
 def schedule():
     return render_template('schedule.html')
 
-
-
 @app.route("/sportsmen")
 def sportsmen():
     sportsmens = Sportsmen.query.all()
     #sposts = current_user.followed_posts()
     return render_template('sportsmen.html', sportsmens=sportsmens, title='Sportsmen')
 
-
 @app.route("/events")
 def event():
     events = Event.query.all()
     return render_template('calendar.html', events=events)
-
-
-
-@app.route("/contacts")
-def contacts():
-    return render_template('contacts.html', title='Contacts')
-
 
 @app.route("/admin/index")
 @login_required
@@ -89,16 +72,12 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.password == form.password.data:
-
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
             flash('Неудачная попытка входа. Проверьте email и пароль', 'danger')
     return render_template('login.html', title='Login', form=form)
-
-
-
 
 
 @app.route("/logout")
@@ -156,7 +135,6 @@ def post(post_id):
     return render_template('post.html', title=post.title, post=post, comments=comments)
 
 
-
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
@@ -201,22 +179,10 @@ def new_comm():
         return redirect(url_for('home'))
     return render_template('create_comm.html', title='New Comm', form=form, legend='New Comm')
 
-
-
-# @app.route("/user/<string:username>")
-# def user_posts(username):
-#     page = request.args.get('page', 1, type=int)
-#     user = User.query.filter_by(username=username).first_or_404()
-#     posts = Post.query.filter_by(author=user)\
-#         .order_by(Post.date_posted.desc())\
-#         .paginate(page=page, per_page=5)
-#     return render_template('user_posts.html', posts=posts, user=user)
-
 @app.route('/user/<string:username>', methods=['POST','GET'])
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    page = request.args.get('page', 1, type=int)
     posts = user.posts
     sportsmens = Sportsmen.query.all()
     events = Event.query.all()
@@ -227,48 +193,8 @@ def user(username):
 @login_required
 def sportsmen_profile(name):
     sportsmen = Sportsmen.query.filter_by(name=name).first_or_404()
-
     return render_template('sport_user.html', sportsmen=sportsmen)
 
-
-
-
-
-
-
-
-# @app.route('/follow/<username>')
-# @login_required
-# def follow(username):
-#     user = User.query.filter_by(username=username).first()
-#     if user is None:
-#         flash('User {} not found.'.format(username))
-#         return redirect(url_for('index'))
-#     if user == current_user:
-#         flash('You cannot follow yourself!')
-#         return redirect(url_for('user', username=username))
-#     current_user.follow(user)
-#     db.session.commit()
-#     flash('You are following {}!'.format(username))
-#     return redirect(url_for('user', username=username))
-#
-#
-# @app.route('/unfollow/<username>')
-# @login_required
-# def unfollow(username):
-#     user = User.query.filter_by(username=username).first()
-#     if user is None:
-#         flash('User {} not found.'.format(username))
-#         return redirect(url_for('index'))
-#     if user == current_user:
-#         flash('You cannot unfollow yourself!')
-#         return redirect(url_for('user', username=username))
-#     current_user.unfollow(user)
-#     db.session.commit()
-#     flash('You are not following {}.'.format(username))
-#     return redirect(url_for('user', username=username))
-
-#
 
 @app.route('/follow/<name>')
 @login_required
@@ -277,7 +203,6 @@ def follow(name):
     if sportsmen is None:
         flash('sportsmen {} not found.'.format(name))
         return redirect(url_for('index'))
-
     current_user.follow(sportsmen)
     db.session.commit()
     flash('You are following {}!'.format(name))
@@ -291,8 +216,6 @@ def unfollow(name):
     if sportsmen is None:
         flash('Sportsmen {} not found.'.format(name))
         return redirect(url_for('index'))
-
-
     current_user.unfollow(sportsmen)
     db.session.commit()
     flash('You are not following {}.'.format(name))

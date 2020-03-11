@@ -6,7 +6,6 @@
             <h2> {{ member.name }} </h2>
                <a class="mr-2" href="{{ url_for('sportsmen_profile', name=member.name ) }}">{{ member.name }}</a>
                 <p class="article-content">{{ member.taking_parts }}</p>
-{{sposts}}
           </div>
         </article>
     {% endfor %}
