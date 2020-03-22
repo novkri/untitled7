@@ -228,3 +228,10 @@ def unfollow(name):
     db.session.commit()
     flash('You are not following {}.'.format(name))
     return redirect(url_for('sportsmen', name=name))
+
+
+@app.route('/event/<string:name>', methods=['POST', 'GET'])
+@login_required
+def events_details(name):
+    event = Event.query.filter_by(name=name).first_or_404()
+    return render_template('event.html', event=event)

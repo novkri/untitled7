@@ -3,21 +3,16 @@
     <table>
         <tr valign="top">
             <td>
-                <h1>Имя: {{ sportsmen.name}}</h1>
-                <p>Биография: {{ sportsmen.biography}} </p>
-                <p>event_id: {{ sportsmen.event_id}} </p>
-                <p>taking_parts: {{ sportsmen.taking_parts}} </p>
+                <h2> Имя: {{ sportsmen.name}} </h2>
+                <p> Описание: {{ sportsmen.biography}} </p>
 
                 {% if not current_user.is_following(sportsmen) %}
                 <p><a href="{{ url_for('follow', name=sportsmen.name) }}">Follow</a></p>
                 {% else %}
                 <p><a href="{{ url_for('unfollow', name=sportsmen.name) }}">Unfollow</a></p>
                 {% endif %}
-
-
             </td>
         </tr>
     </table>
     <hr>
-
 {% endblock %}
