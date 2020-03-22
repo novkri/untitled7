@@ -6,8 +6,8 @@ from flaskblog.models import User
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username',validators=[DataRequired()])
-    email = StringField('Email',validators=[DataRequired(), Email()])
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Зарегистрироваться')
 
@@ -51,6 +51,7 @@ class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
+
 
 class CommForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])

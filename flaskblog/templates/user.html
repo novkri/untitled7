@@ -11,12 +11,16 @@
                 <p><a href="{{ url_for('account') }}">Редактировать мой профиль</a></p>
                 {% endif %}
 
-                    subscriptions:
-                {% for sportsmens in user.followed %}
-                    </br>
-                {{ sportsmens.name }} чавствует в  событиях: {% for event in sportsmens.taking_parts %}
-                                                                    {{ event.name }},
-                                                            {% endfor %}
+             subscriptions:
+            {% for sportsmens in user.followed %} </br>
+                <article class="media content-section">
+                  <div class="media-body">
+                    <h2><a class="article-title" >{{ sportsmens.name }} учавствует в:</a></h2>
+                    <p class="article-content">{% for event in sportsmens.taking_parts %}
+                                                                    {{ event.name }} </br>
+                                                            {% endfor %}</p>
+                  </div>
+                </article>
                  {% endfor %}
             </td>
         </tr>

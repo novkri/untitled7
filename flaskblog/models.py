@@ -14,12 +14,6 @@ followers = db.Table('followers',
     db.Column('followed_id', db.Integer, db.ForeignKey('sportsmen.id'))
 )
 
-
-subs = db.Table('subs',
-                db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-                db.Column('sportsmen_id', db.Integer, db.ForeignKey('sportsmen.id'))
-                )
-
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -36,10 +30,11 @@ sport_event = db.Table('sport_event',
                 db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
                 )
 
+# event_id и taking_parts - одно и то же
 class Sportsmen(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))     ##########
     biography = db.Column(db.Text, nullable=False)
     taking_parts = db.relationship('Event', secondary=sport_event, backref=db.backref('sport_event', lazy='dynamic'))
 
@@ -64,6 +59,7 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     post = db.relationship('Post', backref=db.backref('post'), lazy=True)
     pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    # status не используется нигде
     status = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
@@ -77,7 +73,6 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
-    subscriptions = db.relationship('Sportsmen', secondary=subs, backref=db.backref('subscribers', lazy='dynamic'))
     followed = db.relationship('Sportsmen', secondary=followers,
         backref=db.backref('followers', lazy='dynamic') )
     def __repr__(self):

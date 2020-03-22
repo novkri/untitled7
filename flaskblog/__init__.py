@@ -19,7 +19,7 @@ app.config['FLASK_ADMIN_SWATCH'] = 'Cosmo'  # Cosmo
 
 from flaskblog.models import User, Post, Sportsmen, Event, Comment
 
-admin = Admin(app, name='Admin Page', template_mode='bootstrap1') ##
+admin = Admin(app, name='Admin Page', template_mode='bootstrap3') ##
 
 admin.add_view(ModelView(Post, db.session))
 admin.add_view(ModelView(User, db.session))
