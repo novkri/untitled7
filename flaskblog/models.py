@@ -1,4 +1,3 @@
-# работа с данными
 from datetime import datetime
 from flaskblog import db, login_manager
 from flask_login import UserMixin
@@ -10,9 +9,10 @@ def load_user(user_id):
 
 
 followers = db.Table('followers',
-    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('followed_id', db.Integer, db.ForeignKey('sportsmen.id'))
-)
+                     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+                     db.Column('followed_id', db.Integer, db.ForeignKey('sportsmen.id'))
+                     )
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,22 +21,24 @@ class Post(db.Model):
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     comments = db.Column(db.Integer, default=0)
+
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
 
 
 sport_event = db.Table('sport_event',
-                db.Column('sportsmen_id', db.Integer, db.ForeignKey('sportsmen.id')),
-                db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
-                )
+                       db.Column('sportsmen_id', db.Integer, db.ForeignKey('sportsmen.id')),
+                       db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
+                       )
 
-# event_id и taking_parts - одно и то же
+
 class Sportsmen(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))     ##########
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))  # sport_event
     biography = db.Column(db.Text, nullable=False)
-    taking_parts = db.relationship('Event', secondary=sport_event, backref=db.backref('sport_event', lazy='dynamic'))
+    taking_parts = db.relationship('Event', secondary=sport_event,
+                                   backref=db.backref('sport_event', lazy='dynamic'))  # это sport_event, а sportsmens
 
     def __repr__(self):
         return f"Sportsmen('{self.name}')"
@@ -51,6 +53,7 @@ class Event(db.Model):
     def __repr__(self):
         return f"Event('{self.name}', '{self.date}')"
 
+
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), unique=False)
@@ -59,7 +62,7 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     post = db.relationship('Post', backref=db.backref('post'), lazy=True)
     pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    # status не используется нигде
+    # status не используется
     status = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
@@ -74,7 +77,8 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', backref='author', lazy=True)
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     followed = db.relationship('Sportsmen', secondary=followers,
-        backref=db.backref('followers', lazy='dynamic') )
+                               backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
 
@@ -87,5 +91,4 @@ class User(db.Model, UserMixin):
             self.followed.remove(sportsmen)
 
     def is_following(self, sportsmen):
-        return self.followed.filter(
-            followers.c.followed_id == sportsmen.id).count() > 0
+        return self.followed.filter(followers.c.followed_id == sportsmen.id).count() > 0
