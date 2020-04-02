@@ -3,8 +3,13 @@
     <article>
         <div class="media-body">
             <div class="article-metadata">
-                <a class="mr-2" href="{{ url_for('user', username=post.author.username) }}">{{ post.author.username }}</a>
-                <small class="text-muted">{{ post.date_posted.strftime('%d.%m.%Y') }}</small>
+                <table>
+                    <tr valign="top">
+                        <td><img src="{{ post.author.avatar(36) }}"></td>
+                        <td><a class="mr-2" href="{{ url_for('user', username=post.author.username) }}">{{ post.author.username }}</a></td>
+                        <td><small class="text-muted">{{ post.date_posted.strftime('%d.%m.%Y') }}</small></td>
+                    </tr>
+                </table>
                 {% if post.author == current_user %}
                     <div>
                         <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_post', post_id=post.id) }}">Обновить</a>
@@ -41,8 +46,14 @@
                         <div class="single-comment justify-content-between d-flex">
                             <div class="user justify-content-between d-flex">
                                 <div class="desc">
-                                    <h5><a href="{{ url_for('user', username=post.author.username) }}">{{ comment.name }}</a></h5>
-                                    <p class="date">{{ comment.pub_date.strftime('%d %B %Y') }}</p>
+                                    <table>
+                                        <tr valign="top">
+                                            <td><img src="{{ comment.com_author.avatar(36) }}"></td>
+                                            <td> <a href="{{ url_for('user', username=comment.name) }}">{{ comment.name }}</a></td>
+                                            <td><p class="date">{{ comment.pub_date.strftime('%d %B %Y') }}</p></td>
+                                        </tr>
+                                    </table>
+<!--                                    <td>{{ post.author.username }} says:<br>{{ post.body }}</td>-->
                                     <p class="comment">{{ comment.message }}</p>
                                 </div>
                             </div>

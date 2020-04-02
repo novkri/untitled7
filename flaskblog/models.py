@@ -1,6 +1,7 @@
 from datetime import datetime
 from flaskblog import db, login_manager
 from flask_login import UserMixin
+from hashlib import md5
 
 
 @login_manager.user_loader
@@ -61,7 +62,7 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     post = db.relationship('Post', backref=db.backref('post'), lazy=True)
     pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     def __repr__(self):
         return f"Comment('{self.username}')"
 
@@ -72,6 +73,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
+    comments = db.relationship('Comment', backref='com_author', lazy=True)
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     followed = db.relationship('Sportsmen', secondary=followers,
                                backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
@@ -89,3 +91,7 @@ class User(db.Model, UserMixin):
 
     def is_following(self, sportsmen):
         return self.followed.filter(followers.c.followed_id == sportsmen.id).count() > 0
+
+    def avatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)

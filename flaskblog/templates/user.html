@@ -2,14 +2,18 @@
 {% block content %}
     <table>
         <tr valign="top">
-            <br>
-                <h1>Пользователь: {{ user.username }}</h1>
-
-                {% if user.last_seen %}<p>Последняя дата посещения: {{ user.last_seen }}</p>{% endif %}
+            <td><img src="{{ user.avatar(128) }}"></td>
+             <td><h1>User: {{ user.username }}</h1>
+             {% if user.last_seen %}<p>Последняя дата посещения: {{ user.last_seen }}</p>{% endif %}
 
                 {% if user == current_user %}
                 <p><a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{{ url_for('account') }}">Редактировать мой профиль</a></p>
                 {% endif %}
+             </td>
+         </tr>
+    </table>
+    <hr>
+
 
             <h2>Подписки: </h2>
             {% for sportsmens in user.followed %} </br>

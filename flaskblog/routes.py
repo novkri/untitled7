@@ -132,7 +132,7 @@ def post(post_id):
         name = request.form.get('name')
         email = request.form.get('email')
         message = request.form.get('message')
-        comments = Comment(name=current_user.username, email=current_user.email, message=message, post_id=post.id)
+        comments = Comment(name=current_user.username, email=current_user.email, message=message, post_id=post.id, user_id=current_user.id)
         db.session.add(comments)
         post.comments += 1
 
