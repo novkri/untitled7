@@ -26,19 +26,18 @@ class Post(db.Model):
         return f"Post('{self.title}', '{self.date_posted}')"
 
 
-sport_event = db.Table('sport_event',
-                       db.Column('sportsmen_id', db.Integer, db.ForeignKey('sportsmen.id')),
-                       db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
-                       )
+participants = db.Table('sport_event',
+                        db.Column('sportsmen_id', db.Integer, db.ForeignKey('sportsmen.id')),
+                        db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
+                        )
 
 
 class Sportsmen(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))  # sport_event
     biography = db.Column(db.Text, nullable=False)
-    taking_parts = db.relationship('Event', secondary=sport_event,
-                                   backref=db.backref('sport_event', lazy='dynamic'))  # это sport_event, а sportsmens
+    taking_parts = db.relationship('Event', secondary=participants,
+                                   backref=db.backref('participants', lazy='dynamic'))
 
     def __repr__(self):
         return f"Sportsmen('{self.name}')"
@@ -62,8 +61,6 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     post = db.relationship('Post', backref=db.backref('post'), lazy=True)
     pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    # status не используется
-    status = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return f"Comment('{self.username}')"

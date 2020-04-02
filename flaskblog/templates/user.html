@@ -11,11 +11,11 @@
                 <p><a href="{{ url_for('account') }}">Редактировать мой профиль</a></p>
                 {% endif %}
 
-             subscriptions:
+            <h2> subscriptions: </h2>
             {% for sportsmens in user.followed %} </br>
                 <article class="media content-section">
                   <div class="media-body">
-                    <h2><a class="article-title" >{{ sportsmens.name }} учавствует в:</a></h2>
+                    <h4><a class="article-title" >{{ sportsmens.name }} учавствует в:</a></h4>
                     <p class="article-content">{% for event in sportsmens.taking_parts %}
                                                                     {{ event.name }} </br>
                                                             {% endfor %}</p>

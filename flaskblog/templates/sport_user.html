@@ -7,9 +7,9 @@
                 <p> Описание: {{ sportsmen.biography}} </p>
 
                 {% if not current_user.is_following(sportsmen) %}
-                <p><a href="{{ url_for('follow', name=sportsmen.name) }}">Follow</a></p>
+                <p><a href="{{ url_for('follow', name=sportsmen.name) }}">Подписаться</a></p>
                 {% else %}
-                <p><a href="{{ url_for('unfollow', name=sportsmen.name) }}">Unfollow</a></p>
+                <p><a href="{{ url_for('unfollow', name=sportsmen.name) }}">Отписаться</a></p>
                 {% endif %}
             </td>
         </tr>
