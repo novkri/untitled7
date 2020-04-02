@@ -15,8 +15,8 @@
 <!--              <small class="text-muted">{{ post.date_posted.strftime('%d.%m.%Y') }}</small>-->
             </div>
             <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
-              <a class="btn btn-outline-primary btn-sm mt-1 mb-1" href="{{ url_for('post', post_id=post.id) }}">Далее</a>
+              <p>{{ post.content | truncate(350, True) }}</p>
+              <a class="btn btn-outline-primary btn-sm mt-1 mb-1" href="{{ url_for('post', post_id=post.id) }}">Читать далее</a>
           </div>
         </article>
     {% endfor %}
