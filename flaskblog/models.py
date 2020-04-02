@@ -39,6 +39,7 @@ class Sportsmen(db.Model):
     biography = db.Column(db.Text, nullable=False)
     taking_parts = db.relationship('Event', secondary=participants,
                                    backref=db.backref('participants', lazy='dynamic'))
+    image_file = db.Column(db.String(20), nullable=False, default='def.jpg')
 
     def __repr__(self):
         return f"Sportsmen('{self.name}')"
@@ -49,7 +50,7 @@ class Event(db.Model):
     name = db.Column(db.String(100), unique=True, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     desc = db.Column(db.Text, nullable=False)
-
+   # pic_event =
     def __repr__(self):
         return f"Event('{self.name}', '{self.date}')"
 

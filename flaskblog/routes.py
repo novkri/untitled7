@@ -188,7 +188,8 @@ def user(username):
 @login_required
 def sportsmen_profile(name):
     sportsmen = Sportsmen.query.filter_by(name=name).first_or_404()
-    return render_template('sport_user.html', sportsmen=sportsmen, title=sportsmen.name)
+    image_file = url_for('static', filename='img/%s.jpg' % sportsmen.name)
+    return render_template('sport_user.html', sportsmen=sportsmen, title=sportsmen.name, image_file=image_file)
 
 
 @app.route('/follow/<name>')
