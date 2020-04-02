@@ -43,13 +43,13 @@ def schedule():
 
 @app.route("/sportsmen")
 def sportsmen():
-    sportsmens = Sportsmen.query.all()
+    sportsmens = Sportsmen.query.order_by(Sportsmen.name.asc())
     return render_template('sportsmen.html', sportsmens=sportsmens, title='Спортсмены')
 
 
 @app.route("/events")
 def event():
-    events = Event.query.all()
+    events = Event.query.order_by(Event.date.desc())
     return render_template('calendar.html', events=events, title='События')
 
 

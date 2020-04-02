@@ -8,11 +8,10 @@
                     <tr valign="top">
                         <td><img src="{{ post.author.avatar(24) }}"></td>
                         <td><a class="mr-2" href="{{ url_for('user', username=post.author.username) }}">{{ post.author.username }}</a></td>
-                        <td><small class="text-muted">{{ post.date_posted.strftime('%d.%m.%Y') }}</small></td>
+                        <td><small class="date">{{ post.date_posted.strftime('%d %B %Y') }}</small></td>
+
                     </tr>
                 </table>
-<!--              <a class="mr-2" href="{{ url_for('user', username=post.author.username) }}">{{ post.author.username }}</a>-->
-<!--              <small class="text-muted">{{ post.date_posted.strftime('%d.%m.%Y') }}</small>-->
             </div>
             <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
               <p>{{ post.content | truncate(350, True) }}</p>

@@ -22,6 +22,7 @@ from flaskblog.models import *
 admin = Admin(app, name='Admin Page', template_mode='bootstrap3')
 
 admin.add_view(ModelView(Post, db.session))
+admin.add_view(ModelView(Comment, db.session))
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Sportsmen, db.session))
 admin.add_view(ModelView(Event, db.session))

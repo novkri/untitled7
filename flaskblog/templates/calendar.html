@@ -4,7 +4,7 @@
         <article class="media content-section">
           <div class="media-body">
               <h2><a>{{ event.name }}</a></h2>
-                <p class="article-content">Дата: {{ event.date }}</p>
+                <p class="date">Дата: {{ event.date.strftime('%d %B %Y') }}</p>
               <a class="btn btn-outline-primary btn-sm mt-1 mb-1" href="{{ url_for('events_details', name=event.name ) }}">Далее</a>
           </div>
         </article>

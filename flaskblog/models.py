@@ -46,7 +46,7 @@ class Sportsmen(db.Model):
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), unique=True, nullable=False)
+    name = db.Column(db.String(100), unique=True, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     desc = db.Column(db.Text, nullable=False)
 
@@ -62,9 +62,10 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     post = db.relationship('Post', backref=db.backref('post'), lazy=True)
     pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+
     def __repr__(self):
-        return f"Comment('{self.username}')"
+        return f"Comment('{self.name}')"
 
 
 class User(db.Model, UserMixin):

@@ -4,7 +4,7 @@
         <tr valign="top">
             <td><img src="{{ user.avatar(128) }}"></td>
              <td><h1>User: {{ user.username }}</h1>
-             {% if user.last_seen %}<p>Последняя дата посещения: {{ user.last_seen }}</p>{% endif %}
+             {% if user.last_seen %}<p>Последняя дата посещения: {{ user.last_seen.strftime('%d %B %Y %H:%M') }}</p>{% endif %}
                 {% if user == current_user %}
                 <p><a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{{ url_for('account') }}">Редактировать мой профиль</a></p>
                 {% endif %}
@@ -20,7 +20,7 @@
                   <div class="media-body">
                     <h4><a class="article-title" >{{ sportsmens.name }} учавствует в событиях:</a></h4>
                     <p class="article-content">{% for event in sportsmens.taking_parts %}
-                                                                    {{ event.name }} </br>
+                                                                   <span>&#8226;</span> {{ event.name }}
                                                             {% endfor %}</p>
                   </div>
                 </article>
