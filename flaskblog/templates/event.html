@@ -1,12 +1,12 @@
 {% extends "Layout.html "%}
 {% block content %}
-    <table>
-        <tr valign="top">
-            <td>
-                <h2> Название: {{ event.name}} </h2>
-                <p> Описание: {{ event.desc}} </p>
-            </td>
-        </tr>
-    </table>
-    <hr>
+<article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+                <p><h5> Название: {{ event.name}} </h5></p>
+            </div>
+                <p> <h5>Описание: </h5></p>
+              <p>{{ event.desc}} </p>
+          </div>
+</article>
 {% endblock %}

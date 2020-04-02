@@ -3,19 +3,19 @@
     <table>
         <tr valign="top">
             <br>
-                <h1>User: {{ user.username }}</h1>
+                <h1>Пользователь: {{ user.username }}</h1>
 
-                {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
+                {% if user.last_seen %}<p>Последняя дата посещения: {{ user.last_seen }}</p>{% endif %}
 
                 {% if user == current_user %}
-                <p><a href="{{ url_for('account') }}">Редактировать мой профиль</a></p>
+                <p><a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{{ url_for('account') }}">Редактировать мой профиль</a></p>
                 {% endif %}
 
-            <h2> subscriptions: </h2>
+            <h2>Подписки: </h2>
             {% for sportsmens in user.followed %} </br>
                 <article class="media content-section">
                   <div class="media-body">
-                    <h4><a class="article-title" >{{ sportsmens.name }} учавствует в:</a></h4>
+                    <h4><a class="article-title" >{{ sportsmens.name }} учавствует в событиях:</a></h4>
                     <p class="article-content">{% for event in sportsmens.taking_parts %}
                                                                     {{ event.name }} </br>
                                                             {% endfor %}</p>

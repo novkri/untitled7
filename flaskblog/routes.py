@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import app, db
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, CommForm
+from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from flaskblog.models import User, Post, Sportsmen, Event, Comment
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
@@ -15,7 +15,6 @@ def before_request():
 
 @app.route("/")
 @app.route("/home")
-@login_required
 def home():
     posts = Post.query.all()
     return render_template('home.html', posts=posts)
@@ -44,13 +43,13 @@ def schedule():
 @app.route("/sportsmen")
 def sportsmen():
     sportsmens = Sportsmen.query.all()
-    return render_template('sportsmen.html', sportsmens=sportsmens, title='Sportsmen')
+    return render_template('sportsmen.html', sportsmens=sportsmens, title='Спортсмены')
 
 
 @app.route("/events")
 def event():
     events = Event.query.all()
-    return render_template('calendar.html', events=events)
+    return render_template('calendar.html', events=events, title='События')
 
 
 @app.route("/admin/index")
@@ -70,7 +69,7 @@ def register():
         db.session.commit()
         flash(f'Аккаунт создан!', 'success')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='Регистрация', form=form)
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -86,7 +85,7 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
             flash('Неудачная попытка входа. Проверьте email и пароль', 'danger')
-    return render_template('login.html', title='Login', form=form)
+    return render_template('login.html', title='Вход', form=form)
 
 
 @app.route("/logout")
@@ -108,7 +107,7 @@ def account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-    return render_template('account.html', title='Account', form=form)
+    return render_template('account.html', title='Профиль', form=form)
 
 
 @app.route("/post/new", methods=['GET', 'POST'])
@@ -121,7 +120,7 @@ def new_post():
         db.session.commit()
         flash('Новый пост создан!', 'success')
         return redirect(url_for('home'))
-    return render_template('create_post.html', title='New Post', form=form, legend='New Post')
+    return render_template('create_post.html', title='Новый пост', form=form, legend='Новый пост')
 
 
 @app.route("/post/<int:post_id>", methods=['POST', 'GET'])
@@ -159,7 +158,7 @@ def update_post(post_id):
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
-    return render_template('create_post.html', title='Update Post', form=form, legend='Update Post')
+    return render_template('create_post.html', title='Изменить пост', form=form, legend='Изменить пост')
 
 
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
@@ -174,19 +173,6 @@ def delete_post(post_id):
     return redirect(url_for('home'))
 
 
-@app.route("/comm/new", methods=['GET', 'POST'])
-@login_required
-def new_comm():
-    form = CommForm()
-    if form.validate_on_submit():
-        comm = Post(title=form.title.data, content=form.content.data, author=current_user)
-        db.session.add(comm)
-        db.session.commit()
-        flash('Новый коммент создан!', 'success')
-        return redirect(url_for('home'))
-    return render_template('create_comm.html', title='New Comm', form=form, legend='New Comm')
-
-
 @app.route('/user/<string:username>', methods=['POST', 'GET'])
 @login_required
 def user(username):
@@ -194,14 +180,14 @@ def user(username):
     posts = user.posts
     sportsmens = Sportsmen.query.all()
     events = Event.query.all()
-    return render_template('user.html', posts=posts, user=user, sportsmens=sportsmens, events=events)
+    return render_template('user.html', posts=posts, user=user, sportsmens=sportsmens, events=events, title=username)
 
 
 @app.route('/sportsmen/<string:name>', methods=['POST', 'GET'])
 @login_required
 def sportsmen_profile(name):
     sportsmen = Sportsmen.query.filter_by(name=name).first_or_404()
-    return render_template('sport_user.html', sportsmen=sportsmen)
+    return render_template('sport_user.html', sportsmen=sportsmen, title=sportsmen.name)
 
 
 @app.route('/follow/<name>')
@@ -209,11 +195,11 @@ def sportsmen_profile(name):
 def follow(name):
     sportsmen = Sportsmen.query.filter_by(name=name).first()
     if sportsmen is None:
-        flash('sportsmen {} not found.'.format(name))
+        flash('{} не найден.'.format(name))
         return redirect(url_for('index'))
     current_user.follow(sportsmen)
     db.session.commit()
-    flash('You are following {}!'.format(name))
+    flash('Вы подписаны на {}!'.format(name), 'success')
     return redirect(url_for('sportsmen', name=name))
 
 
@@ -222,11 +208,11 @@ def follow(name):
 def unfollow(name):
     sportsmen = Sportsmen.query.filter_by(name=name).first()
     if sportsmen is None:
-        flash('Sportsmen {} not found.'.format(name))
+        flash('{} не найден.'.format(name))
         return redirect(url_for('index'))
     current_user.unfollow(sportsmen)
     db.session.commit()
-    flash('You are not following {}.'.format(name))
+    flash('Вы отписались от {}.'.format(name), 'success')
     return redirect(url_for('sportsmen', name=name))
 
 
@@ -234,4 +220,4 @@ def unfollow(name):
 @login_required
 def events_details(name):
     event = Event.query.filter_by(name=name).first_or_404()
-    return render_template('event.html', event=event)
+    return render_template('event.html', event=event, title=event.name)

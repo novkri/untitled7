@@ -3,13 +3,12 @@
     <article>
         <div class="media-body">
             <div class="article-metadata">
-                <a class="mr-2" href="#">{{ post.author.username }}</a>
+                <a class="mr-2" href="{{ url_for('user', username=post.author.username) }}">{{ post.author.username }}</a>
                 <small class="text-muted">{{ post.date_posted.strftime('%d.%m.%Y') }}</small>
                 {% if post.author == current_user %}
                     <div>
                         <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_post', post_id=post.id) }}">Обновить</a>
                         <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Удалить</button>
-
                     </div>
                 {% endif %}
             </div>
@@ -18,33 +17,31 @@
         </div>
 
         <div class="comment-form">
-            <h4>Post Comment</h4>
+            <p><h4>Оставить комментарий</h4></p>
             <form method="POST">
 
                 <div class = "form-group">
                    <textarea class = "form-control mb-10" rows="5" name="message"
                              placeholder="Message"
                                 onfocus="this.placeholder = ''"
-                             onblur="this.placeholder = 'Message'"
+                             onblur="this.placeholder = 'Сообщение...'"
                    required=""></textarea>
                 </div>
-                <button type="submit" class="primary-btn text-uppercase">Comment</button>
+                <button type="submit" class="btn btn-outline-success">Отправить</button>
             </form>
         </div>
 
         <div class="comment-sec-ares">
             <div class="container">
                 <div class="row flex-column">
-                    <h6>{{ post.comments }} Comments</h6>
+                    <p></p>
+                    <p><h6> Комментариев: {{ post.comments }}</h6></p>
                     {% for comment in comments %}
                     <div class="comment-list">
                         <div class="single-comment justify-content-between d-flex">
                             <div class="user justify-content-between d-flex">
-                                <div class="thumb">
-
-                                </div>
                                 <div class="desc">
-                                    <h5><a href="#">{{ comment.name }}</a></h5>
+                                    <h5><a href="{{ url_for('user', username=post.author.username) }}">{{ comment.name }}</a></h5>
                                     <p class="date">{{ comment.pub_date.strftime('%d %B %Y') }}</p>
                                     <p class="comment">{{ comment.message }}</p>
                                 </div>

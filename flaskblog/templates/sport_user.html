@@ -1,18 +1,17 @@
 {% extends "Layout.html "%}
 {% block content %}
-    <table>
-        <tr valign="top">
-            <td>
-                <h2> Имя: {{ sportsmen.name}} </h2>
-                <p> Описание: {{ sportsmen.biography}} </p>
-
+<article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+                <p><h5> Имя: {{ sportsmen.name}} </h5></p>
+            </div>
+                <p><h5> Описание:</h5></p>
+                <p>{{ sportsmen.biography}} </p>
                 {% if not current_user.is_following(sportsmen) %}
-                <p><a href="{{ url_for('follow', name=sportsmen.name) }}">Подписаться</a></p>
+                <p><a class="btn btn-outline-success btn-sm mt-1 mb-1" href="{{ url_for('follow', name=sportsmen.name) }}">Подписаться</a></p>
                 {% else %}
-                <p><a href="{{ url_for('unfollow', name=sportsmen.name) }}">Отписаться</a></p>
+                <p><a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{{ url_for('unfollow', name=sportsmen.name) }}">Отписаться</a></p>
                 {% endif %}
-            </td>
-        </tr>
-    </table>
-    <hr>
+          </div>
+</article>
 {% endblock %}

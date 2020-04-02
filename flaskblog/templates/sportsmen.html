@@ -3,7 +3,8 @@
     {% for member in sportsmens %}
         <article class="media content-section">
           <div class="media-body">
-            <h2> <a class="mr-2" href="{{ url_for('sportsmen_profile', name=member.name ) }}">{{ member.name }}</a> </h2>
+            <h2> <a>{{ member.name }}</a> </h2>
+              <a class="btn btn-outline-primary btn-sm mt-1 mb-1" href="{{ url_for('sportsmen_profile', name=member.name ) }}">Далее</a>
           </div>
         </article>
     {% endfor %}
