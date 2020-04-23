@@ -81,9 +81,11 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.password == form.password.data:
+            flash('You were logged in!', 'success')
             login_user(user, remember=form.remember.data)
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
+            #next_page = request.args.get('next')
+            return redirect(url_for('home'))
+            #redirect(next_page) if next_page else# redirect(url_for('home'))
         else:
             flash('Неудачная попытка входа. Проверьте email и пароль', 'danger')
     return render_template('login.html', title='Вход', form=form)
@@ -110,7 +112,7 @@ def account():
         form.email.data = current_user.email
     return render_template('account.html', title='Профиль', form=form)
 
-
+# только для администратора, нет необходимости
 @app.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():
@@ -142,7 +144,7 @@ def post(post_id):
 
     return render_template('post.html', title=post.title, post=post, comments=comments)
 
-
+# Только для админа, нет необходимости
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
@@ -161,7 +163,7 @@ def update_post(post_id):
         form.content.data = post.content
     return render_template('create_post.html', title='Изменить пост', form=form, legend='Изменить пост')
 
-
+# Только для админа, нет необходимости
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
 @login_required
 def delete_post(post_id):

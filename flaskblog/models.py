@@ -50,7 +50,6 @@ class Event(db.Model):
     name = db.Column(db.String(100), unique=True, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     desc = db.Column(db.Text, nullable=False)
-   # pic_event =
     def __repr__(self):
         return f"Event('{self.name}', '{self.date}')"
 
