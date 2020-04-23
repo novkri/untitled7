@@ -7,5 +7,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\chris\Desktop\ТРПО\Курсач\лабы 2\untitled7\untitled7\flaskblog\site.db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="" uuid="3eca3472-5028-48f0-a807-7818877b81a9">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\chris\Desktop\untitled7\.coverage</jdbc-url>
+    </data-source>
   </component>
 </project>

@@ -1,9 +1,8 @@
-import os
 import unittest
-
-from flaskblog import app, db
+from flaskblog import db
 from flaskblog.models import User, Post, Sportsmen
 from datetime import datetime
+
 
 class TestCase(unittest.TestCase):
     def setUp(self):
