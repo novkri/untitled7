@@ -3,7 +3,7 @@ import unittest
 from flaskblog import app, db
 from flaskblog.models import User, Post, Sportsmen
 from datetime import datetime
-
+import requests
 
 class TestCase(unittest.TestCase):
     def setUp(self):
@@ -41,7 +41,6 @@ class TestCase(unittest.TestCase):
         self.assertEqual(s1.followers.count(), 1)
         self.assertEqual(s1.followers.first().username, 'john')
 
-
     def test_unfollowing(self):
         u1 = User(username='john', email='john@example.com', password='12345')
         s1 = Sportsmen(name='susan', biography='dummy data')
@@ -60,17 +59,17 @@ class TestCase(unittest.TestCase):
         self.assertEqual(u1.followed.count(), 0)
         self.assertEqual(s1.followers.count(), 0)
 
-    # def test_posts(self):
-    #     u = User(username='john', email='john@example.com', password='12345')
-    #     p = Post(title='testpost', content='test post body', author=u, date_posted=datetime.utcnow())
-    #     db.session.add(u)
-    #     db.session.add(p)
-    #     db.session.commit()
-    #     self.assertIsNotNone(Post.query.get(1))
-    #
-    #     db.session.delete(p)
-    #     db.session.commit()
-    #     self.assertIsNone(Post.query.get(1))
+    def test_posts(self):
+        u = User(username='john', email='john@example.com', password='12345')
+        p = Post(title='testpost', content='test post body', author=u, date_posted=datetime.utcnow())
+        db.session.add(u)
+        db.session.add(p)
+        db.session.commit()
+        self.assertIsNotNone(Post.query.get(1))
+
+        db.session.delete(p)
+        db.session.commit()
+        self.assertIsNone(Post.query.get(1))
 
 
 if __name__ == '__main__':

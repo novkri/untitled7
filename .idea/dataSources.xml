@@ -13,5 +13,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\chris\Desktop\untitled7\.coverage</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="test" uuid="b3ddde93-4a0d-45dd-996a-92a1bea5a35f">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\chris\Desktop\untitled7\flaskblog\test.db</jdbc-url>
+    </data-source>
   </component>
 </project>

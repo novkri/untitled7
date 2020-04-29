@@ -1,6 +1,6 @@
-from flask import render_template, url_for, flash, redirect, request, abort
+from flask import render_template, url_for, flash, redirect, request, abort, jsonify
 from flaskblog import app, db
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
+from flaskblog.forms import *
 from flaskblog.models import User, Post, Sportsmen, Event, Comment
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
@@ -81,11 +81,9 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.password == form.password.data:
-            flash('You were logged in!', 'success')
+            flash('Вы вошли в свой аккаунт!', 'success')
             login_user(user, remember=form.remember.data)
-            #next_page = request.args.get('next')
             return redirect(url_for('home'))
-            #redirect(next_page) if next_page else# redirect(url_for('home'))
         else:
             flash('Неудачная попытка входа. Проверьте email и пароль', 'danger')
     return render_template('login.html', title='Вход', form=form)
