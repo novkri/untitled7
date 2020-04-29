@@ -1,9 +1,6 @@
 import unittest
-import os
 from flaskblog import app, db
-from flaskblog.models import User, Post, Sportsmen
-from datetime import datetime
-# import flaskapi
+from flaskblog.models import User, Sportsmen
 import requests
 
 
@@ -62,7 +59,6 @@ class TestsDatabase(unittest.TestCase):
         self.assertFalse(dfdf.is_following(fff))
         self.assertEqual(dfdf.followed.count(), 2)
         self.assertEqual(fff.followers.count(), 0)
-
 
     def test_following(self):
         dfdf = User.query.filter_by(username="admin").first()
